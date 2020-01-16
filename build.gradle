@@ -1,0 +1,55 @@
+apply plugin: 'eclipse'
+apply plugin: 'java'
+
+version = "0.0.1"
+description = "Generate Setter Calls examples"
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+def defaultEncoding = 'UTF-8'
+
+[compileJava, compileTestJava]*.options*.encoding = defaultEncoding
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+
+        resources {
+            srcDir 'src/test/resources'
+        }
+    }
+}
+
+clean {
+    delete 'dist'
+    delete 'build'
+}
+
+task createProject {
+    sourceSets*.java.srcDirs*.each { it.mkdirs() }
+    sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+}
+
+List gensettercalls = ["com.github.adrninistrator:GenSetterCalls:0.0.1"]
+
+List junit = ["junit:junit:4.12"]
+
+dependencies {
+    testImplementation gensettercalls, junit
+}
